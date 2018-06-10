@@ -1,0 +1,68 @@
+import numpy as np
+import math
+
+
+def addRandomValue(x, chance, value):
+    random = np.random.rand()
+    if(random < chance):
+        return x + ((np.random.rand() * value) - (value/2))
+
+
+addRandomValueVectorized = np.vectorize(addRandomValue)
+
+
+class NeuralNetwok:
+    def __init__(self, inputNum, hiddenNum, outputNum):
+        self.inputNum = inputNum
+        self.hiddenNum = hiddenNum
+        self.outputNum = outputNum
+
+        self.weights_ih = np.random.rand(hiddenNum, inputNum)
+        self.weights_ho = np.random.rand(outputNum, hiddenNum)
+        self.biases_ih = np.random.rand(hiddenNum)
+        self.biases_ho = np.random.rand(outputNum)
+
+    def sigmoid(self, x):
+        return 1/(1+np.exp(-x))
+
+    def feedforward(self, input):
+        hidden = np.matmul(self.weights_ih, input)
+        hidden += self.biases_ih
+        hidden = self.sigmoid(hidden)
+
+        output = np.matmul(self.weights_ho, hidden)
+        output += self.biases_ho
+        output = self.sigmoid(output)
+
+        return output
+
+    @staticmethod
+    def crossover(nn1, nn2):
+        nn = NeuralNetwok(nn1.inputNum, nn1.hiddenNum, nn1.outputNum)
+        print(nn1.weights_ih)
+        print(nn2.weights_ih)
+        nn.weights_ih = np.mean([nn1.weights_ih, nn2.weights_ih], axis=0)
+        nn.weights_ho = np.mean([nn1.weights_ho, nn2.weights_ho], axis=0)
+        nn.biases_ho = np.mean([nn1.biases_ho, nn2.biases_ho], axis=0)
+        nn.biases_ho = np.mean([nn1.biases_ho, nn2.biases_ho], axis=0)
+
+        return nn
+
+    def clone(self):
+        nn = NeuralNetwok(self.inputNum, self.hiddenNum, self.outputNum)
+        nn.weights_ih = np.copy(self.weights_ih)
+        nn.weights_ho = np.copy(self.weights_ho)
+        nn.biases_ih = np.copy(self.biases_ih)
+        nn.biases_ho = np.copy(self.biases_ho)
+
+        return nn
+
+    def mutate(self, mutationRate, maxValue):
+        print(self.weights_ih)
+        self.weights_ih = addRandomValueVectorized(
+            self.weights_ih, mutationRate, maxValue)
+        print(self.weights_ih)
+
+
+nn1 = NeuralNetwok(2, 2, 1)
+nn1.mutate(1, 1)
