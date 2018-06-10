@@ -6,16 +6,19 @@ def addRandomValue(x, chance, value):
     random = np.random.rand()
     if(random < chance):
         return x + ((np.random.rand() * value) - (value/2))
+    else:
+        return x
 
 
 addRandomValueVectorized = np.vectorize(addRandomValue)
 
 
-class NeuralNetwok:
+class NeuralNetwork:
     def __init__(self, inputNum, hiddenNum, outputNum):
         self.inputNum = inputNum
         self.hiddenNum = hiddenNum
         self.outputNum = outputNum
+        self.fitness = 0
 
         self.weights_ih = np.random.rand(hiddenNum, inputNum)
         self.weights_ho = np.random.rand(outputNum, hiddenNum)
@@ -38,9 +41,9 @@ class NeuralNetwok:
 
     @staticmethod
     def crossover(nn1, nn2):
-        nn = NeuralNetwok(nn1.inputNum, nn1.hiddenNum, nn1.outputNum)
-        print(nn1.weights_ih)
-        print(nn2.weights_ih)
+        nn = NeuralNetwork(nn1.inputNum, nn1.hiddenNum, nn1.outputNum)
+        # print(nn1.weights_ih)
+        # print(nn2.weights_ih)
         nn.weights_ih = np.mean([nn1.weights_ih, nn2.weights_ih], axis=0)
         nn.weights_ho = np.mean([nn1.weights_ho, nn2.weights_ho], axis=0)
         nn.biases_ho = np.mean([nn1.biases_ho, nn2.biases_ho], axis=0)
@@ -49,7 +52,7 @@ class NeuralNetwok:
         return nn
 
     def clone(self):
-        nn = NeuralNetwok(self.inputNum, self.hiddenNum, self.outputNum)
+        nn = NeuralNetwork(self.inputNum, self.hiddenNum, self.outputNum)
         nn.weights_ih = np.copy(self.weights_ih)
         nn.weights_ho = np.copy(self.weights_ho)
         nn.biases_ih = np.copy(self.biases_ih)
@@ -58,11 +61,12 @@ class NeuralNetwok:
         return nn
 
     def mutate(self, mutationRate, maxValue):
-        print(self.weights_ih)
+        # print(self.weights_ih)
         self.weights_ih = addRandomValueVectorized(
             self.weights_ih, mutationRate, maxValue)
-        print(self.weights_ih)
+        # print(self.weights_ih)
+        # print()
 
 
-nn1 = NeuralNetwok(2, 2, 1)
-nn1.mutate(1, 1)
+# nn1 = NeuralNetwork(2, 2, 1)
+# nn1.mutate(0.01, 0.01)
