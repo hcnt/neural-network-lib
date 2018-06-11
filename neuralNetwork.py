@@ -4,8 +4,8 @@ import math
 
 def addRandomValue(x, chance, value):
     random = np.random.rand()
-    if(random < chance):
-        return x + ((np.random.rand() * value) - (value/2))
+    if (random < chance):
+        return x + ((np.random.rand() * value) - (value / 2))
     else:
         return x
 
@@ -20,13 +20,13 @@ class NeuralNetwork:
         self.outputNum = outputNum
         self.fitness = 0
 
-        self.weights_ih = np.random.rand(hiddenNum, inputNum)
-        self.weights_ho = np.random.rand(outputNum, hiddenNum)
-        self.biases_ih = np.random.rand(hiddenNum)
-        self.biases_ho = np.random.rand(outputNum)
+        self.weights_ih = np.random.uniform(-1, 1, (hiddenNum, inputNum))
+        self.weights_ho = np.random.uniform(-1, 1, (outputNum, hiddenNum))
+        self.biases_ih = np.random.uniform(-1, 1, hiddenNum)
+        self.biases_ho = np.random.uniform(-1, 1, outputNum)
 
     def sigmoid(self, x):
-        return 1/(1+np.exp(-x))
+        return 1 / (1 + np.exp(-x))
 
     def feedforward(self, input):
         hidden = np.matmul(self.weights_ih, input)
@@ -62,11 +62,11 @@ class NeuralNetwork:
 
     def mutate(self, mutationRate, maxValue):
         # print(self.weights_ih)
-        self.weights_ih = addRandomValueVectorized(
-            self.weights_ih, mutationRate, maxValue)
+        self.weights_ih = addRandomValueVectorized(self.weights_ih,
+                                                   mutationRate, maxValue)
         # print(self.weights_ih)
         # print()
 
 
-# nn1 = NeuralNetwork(2, 2, 1)
-# nn1.mutate(0.01, 0.01)
+nn1 = NeuralNetwork(2, 2, 1)
+print(nn1.weights_ih)
