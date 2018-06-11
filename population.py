@@ -38,6 +38,7 @@ class Population:
             self.mutate()
             self.createMatingPool()
             self.crossover()
+        return self.population
 
 
 def xD(xD):
