@@ -1,7 +1,9 @@
 import neuralNetwork
 import population as pop
 import kik_tui_ai as kik
+import numpy as np
 import math
+import pickle
 
 
 def wygenerujRuch(plansza, nn):
@@ -11,23 +13,15 @@ def wygenerujRuch(plansza, nn):
             plansza1.append(plansza[i][j])
     #print(plansza1)
     #print(nn.weights_ih)
-    wynik = math.floor(nn.feedforward(plansza1)[0] * 100)
-    wynik = wynik % 9
-    #print(wynik)
-    i = 0
-    j = 0
+    wynik = nn.feedforward(plansza1)
     while (True):
-        if (plansza[i][j] == 0):
-            wynik -= 1
-            if (wynik <= 0):
-                return i, j
-        j += 1
-        if (j > 2):
-            j = 0
-            i += 1
-        if (i > 2):
-            i = 0
-            j = 0
+        print(wynik)
+        maximum = np.argmax(wynik)
+        print(maximum)
+        if (plansza[maximum // 3][maximum % 3] == 0):
+            return maximum // 3, maximum % 3
+        else:
+            wynik[maximum] = 0
 
 
 def obliczFitness(nn):
@@ -51,7 +45,9 @@ def obliczFitness(nn):
     return fitness**3, wygrane, remisy
 
 
-population = pop.Population(500, 9, 27, 1)
+population = pop.Population(500, 9, 27, 9)
 
 wynik = population.train(obliczFitness, 500)
-print(wynik)
+
+with open('wynik.pkl', 'wb') as output:
+    pickle.dump(wynik, output, pickle.HIGHEST_PROTOCOL)

@@ -68,5 +68,5 @@ class NeuralNetwork:
         # print()
 
 
-nn1 = NeuralNetwork(2, 2, 1)
-print(nn1.weights_ih)
+# nn1 = NeuralNetwork(2, 2, 1)
+# print(nn1.weights_ih)
