@@ -15,9 +15,9 @@ def wygenerujRuch(plansza, nn):
     #print(nn.weights_ih)
     wynik = nn.feedforward(plansza1)
     while (True):
-        print(wynik)
+        # print(wynik)
         maximum = np.argmax(wynik)
-        print(maximum)
+        # print(maximum)
         if (plansza[maximum // 3][maximum % 3] == 0):
             return maximum // 3, maximum % 3
         else:
@@ -29,7 +29,7 @@ def obliczFitness(nn):
     czyZaczyna = 1
     wygrane = 0
     remisy = 0
-    for i in range(5000):
+    for i in range(10000):
         wynik = kik.partia(1, czyZaczyna, wygenerujRuch, nn)
         if wynik == 1:
             wygrane += 1
@@ -51,3 +51,11 @@ wynik = population.train(obliczFitness, 500)
 
 with open('wynik.pkl', 'wb') as output:
     pickle.dump(wynik, output, pickle.HIGHEST_PROTOCOL)
+
+for i in range(len(wynik)):
+    print("sieć " + i)
+    print("wagi ih" + wynik[i].weights_ih)
+    print("wagi ho" + wynik[i].weights_ho)
+    print("biasy ih" + wynik[i].biases_ih)
+    print("biasy ho" + wynik[i].biases_ho)
+    print("------------------------------")
